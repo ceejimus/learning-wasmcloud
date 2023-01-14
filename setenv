@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+
+export WASMCLOUD_OCI_ALLOWED_INSECURE=localhost:5000
+
+while true
+do
+    output=$(wash -o json ctl get hosts 2>&1)
+    success=$(echo $output | jq '.success')
+    echo "waiting on wasmcloud host..."
+    if [[ $success == "true" ]]; then
+        id=$(echo $output | jq '.hosts[0].id' | sed 's/"//g')
+        if [[ $id != "null" ]]; then
+            export WASMCLOUD_HOST_ID=$id
+            echo "Host found: <ID=$WASMCLOUD_HOST_ID>"
+            break
+        fi
+    fi
+    sleep 1
+done
+
+# export WASMCLOUD_ACTOR_ID_BUY=$(wash -o json claims inspect ./buy/build/buy_s.wasm | jq '.module' | sed 's/\"//g')
+# export WASMCLOUD_CLUSTER_SEED=$(docker logs wasmcloud-wasmcloud-1 2>&1 | egrep '^S')

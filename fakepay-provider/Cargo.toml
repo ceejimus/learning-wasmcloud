@@ -1,0 +1,20 @@
+[package]
+name = "wasmcloud-example-provider-fakepay"
+version = "0.1.1"
+edition = "2021"
+resolver = "2"
+
+[dependencies]
+async-trait = "0.1"
+wasmbus-rpc = "0.11"
+log = "0.4"
+wasmcloud-examples-payments = { path = "../payments/rust/" }
+
+# test dependencies
+[dev-dependencies]
+wasmcloud-test-util = "0.6"
+tokio = { version = "1", features = [ "full" ] }
+
+[[bin]]
+name = "fakepay_provider"
+path = "src/main.rs"
