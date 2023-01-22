@@ -12,11 +12,11 @@ use org.wasmcloud.model#wasmbus
 @wasmbus( actorReceive: true )
 service Orders {
   version: "0.1",
-  operations: [ Convert ]
+  operations: [ Purchase ]
 }
 
 /// Converts the input string to a result
-operation Convert {
+operation Purchase {
   input: String,
   output: String
 }

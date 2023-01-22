@@ -27,7 +27,7 @@ pub const SMITHY_VERSION: &str = "1.0";
 #[async_trait]
 pub trait Orders {
     /// Converts the input string to a result
-    async fn convert<TS: ToString + ?Sized + std::marker::Sync>(
+    async fn purchase<TS: ToString + ?Sized + std::marker::Sync>(
         &self,
         ctx: &Context,
         arg: &TS,
@@ -41,11 +41,11 @@ pub trait Orders {
 pub trait OrdersReceiver: MessageDispatch + Orders {
     async fn dispatch(&self, ctx: &Context, message: Message<'_>) -> Result<Vec<u8>, RpcError> {
         match message.method {
-            "Convert" => {
+            "Purchase" => {
                 let value: String = wasmbus_rpc::common::deserialize(&message.arg)
                     .map_err(|e| RpcError::Deser(format!("'String': {}", e)))?;
 
-                let resp = Orders::convert(self, ctx, &value).await?;
+                let resp = Orders::purchase(self, ctx, &value).await?;
                 let buf = wasmbus_rpc::common::serialize(&resp)?;
 
                 Ok(buf)
@@ -101,7 +101,7 @@ impl OrdersSender<wasmbus_rpc::actor::prelude::WasmHost> {
 impl<T: Transport + std::marker::Sync + std::marker::Send> Orders for OrdersSender<T> {
     #[allow(unused)]
     /// Converts the input string to a result
-    async fn convert<TS: ToString + ?Sized + std::marker::Sync>(
+    async fn purchase<TS: ToString + ?Sized + std::marker::Sync>(
         &self,
         ctx: &Context,
         arg: &TS,
@@ -113,7 +113,7 @@ impl<T: Transport + std::marker::Sync + std::marker::Send> Orders for OrdersSend
             .send(
                 ctx,
                 Message {
-                    method: "Orders.Convert",
+                    method: "Orders.Purchase",
                     arg: Cow::Borrowed(&buf),
                 },
                 None,
