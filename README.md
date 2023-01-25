@@ -5,6 +5,8 @@ I was motivated by the functional gaps in creating a provider.
 The final [Testing the new provider](https://wasmcloud.com/docs/app-dev/create-provider/testing) outlined a series of steps that I used to guide my creation of this example.
 In the process of development, I ran into a few issues.
 
+Definitely all a WIP.
+
 ## Issues Encountered
 
 Many of the issues I encountered were standard and (very) expected hiccups related to the procedural nitty-gritty of working with new technologies such as:
@@ -32,7 +34,6 @@ I haven't read 100% of the docs (yet), so ignorance may be the cause of some of 
 - Creating links using wash
 - Unit testing actors
 - Starting providers from registry using WebUI
-- Creating custom interfaces using Smithy
 - Creating interfaces using Smithy
 - Linking to built interface libraries in actor and provider rust projects
 
@@ -40,18 +41,22 @@ I haven't read 100% of the docs (yet), so ignorance may be the cause of some of 
 
 - Deploying and invoking a custom actor/provider pair using custom contracts
   - this was the main gap that motivated this
-- Start complete dev setup - wasmcloud host, local registry (solved)
-- Installing jq dependency used in template makefiles and other examples
-- Using docker for local registry
-- Iteratively update actors and providers from command line (solved)
-  - Custom workflow involving clearing the wasmcloud host's OCI cache
 - Call provider from actor using custom contract
   - this was partially/mostly covered but lacked complete example
+- Start complete dev setup - wasmcloud host, local registry
+  - Using docker for local registry
+- Iteratively update actors and providers from command line
+  - Custom workflow involving clearing the wasmcloud host's OCI cache
+  - WADM would likely make this easier, but that's a wholenother ballgame
+- Installing jq dependency used in template makefiles and other examples
 
 ## Small things that helped me that may help new developers:
-- Capture local host ID (solved)
-- Capture (cold) actor IDs (solved)
-- Start actors and providers using wash (solved)
+
+- Capturing local host ID using wash
+- Extracting actor IDs fromn signed wasm module
+- Start actors and providers using wash
+  - knowing that starting these resources is not idempotent via wash
+  - knowing that wasmCloud caches it's registry
 
 ## Things I had to read the reference for:
 
@@ -60,14 +65,15 @@ I haven't read 100% of the docs (yet), so ignorance may be the cause of some of 
 
 ## Things I need to figure out:
 
-- Capture (cold) provider IDs
+- Capture provider IDs from .par files (possible?)
 - Actor to actor calls in code using custom interface
+  - do you need a link or does the lattice just look at interfaces/capabilities?
 
 ## Possible bugs
 - Putting link too soon after starting provider (and/or actor?) leads to "unlinked actor" error on wash call (possibly bug) (solved)
   - `sleep 1` before putting link
 
-## Sections
+## Sections (from the perspective of this being an article/post)
 - Intro
 - Setting up development environment
   - installing wash
