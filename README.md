@@ -53,7 +53,7 @@ I haven't read 100% of the docs (yet), so ignorance may be the cause of some of 
 ## Small things that helped me that may help new developers:
 
 - Capturing local host ID using wash
-- Extracting actor IDs fromn signed wasm module
+- Extracting actor IDs from signed wasm module
 - Start actors and providers using wash
   - knowing that starting these resources is not idempotent via wash
   - knowing that wasmCloud caches it's registry
